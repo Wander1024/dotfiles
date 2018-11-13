@@ -25,11 +25,12 @@ set showmode
 set laststatus=2 
 set guioptions=''
 se cursorline
+set splitright
 syntax enable
 set background=light
 colorscheme solarized
-hi Search ctermbg=LightYellow
-hi Search ctermfg=Blue
+hi Search ctermbg=Green
+hi Search ctermfg=LightBlue
 hi CursorLineNr ctermfg=220
 set ts=2 sw=2 et
 " set background=dark           " Background color
@@ -59,7 +60,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 "let g:clang_snippets=1
 "let g:clang_conceal_snippets=1
 "let g:clang_snippets_engine='clang_complete'
-"let g:ycm_goto_buffer_command = 'new-tab'
+let g:ycm_goto_buffer_command = 'vertical-split'
 let g:ophigh_color_gui = "#F6FF00"
 let g:indent_guides_enable_on_vim_startup = 1 
 let g:indent_guides_start_level = 2 
@@ -136,9 +137,9 @@ map <S-p>s :tabc <CR>
 " list all tabs
 map <S-p>l :tabs <CR>
 " switch pane 
-map <S-h> <C-W><C-H> <CR>
+map <S-j> <C-W><C-H> <CR>
 map <S-k> <C-W><C-J> <CR>
-map <S-j> <C-W><C-K> <CR>
+map <S-i> <C-W><C-K> <CR>
 map <S-l> <C-W><C-L> <CR>
 " create pane
 map <S-n> :tabnew <CR>
