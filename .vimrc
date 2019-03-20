@@ -1,187 +1,124 @@
-" -----------说明
-"  <C-n> :command <CR> Crtl+n trigger command
-"
-"
-"
-"
-"  ---------------
 set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" --------------------------vim settings
+filetype plugin indent on
+set backspace=2
 set hls
 set nu
 set tabstop=2
 set shiftwidth=2
-set expandtab
-set rtp+=~/.vim/bundle/Vundle.vim
+set autoindent
 set shell=/bin/zsh
 set splitbelow
-set modifiable
+set pastetoggle=M-0
 set completeopt=menu,menuone,preview
 set pumheight=20
 set showcmd
-set showmode 
-set laststatus=2 
+set showmode
+set laststatus=2
 set guioptions=''
-se cursorline
+set cursorline
 set splitright
+set ts=2 sw=2 et
+set expandtab
 syntax enable
-set background=light
-colorscheme solarized
 hi Search ctermbg=Green
 hi Search ctermfg=LightBlue
 hi CursorLineNr ctermfg=220
-set ts=2 sw=2 et
 " set background=dark           " Background color
-" set t_Co=256
-set guifont=Source\ Code\ Pro\ Light:h13
-" colorscheme solarized
-" colorscheme desert
-filetype plugin indent on
-
-" --------------------------shortcut
-"nnoremap <F5> :YcmForceCompileAndDiagnostics
-nnoremap <C-g> :YcmCompleter GoToDefinition<CR>
-nnoremap <C-e> <Esc> $a
-nnoremap <C-a> <Esc>^i 
-inoremap <C-e> <Esc> $a
-inoremap <C-a> <Esc>^i
-"inoremap {      {}<Left>
-"inoremap {<CR>  {<CR>}<Esc>O
-"inoremap {{     {
-"inoremap {}     {}
-"inoremap (      ()<Left>
-"inoremap (<CR>  (<CR>)<Esc>O
-"inoremap ((     (
-"inoremap ()     ()
-" ------------------------- variable
+set t_Co=256
+"colorscheme hybrid
+"set guifont=Source\ Code\ Pro\ Light:h13
+let mapleader = " "
 let g:ycm_autoclose_preview_window_after_insertion = 1
-"let g:clang_snippets=1
-"let g:clang_conceal_snippets=1
-"let g:clang_snippets_engine='clang_complete'
-"let g:ycm_goto_buffer_command = 'vertical-split'
+"let g:ycm_log_level = 'debug'
 let g:ycm_goto_buffer_command = 'horizontal-split'
 let g:ophigh_color_gui = "#F6FF00"
-let g:indent_guides_enable_on_vim_startup = 1 
-let g:indent_guides_start_level = 2 
-let g:indent_guides_guide_size = 1 
-let g:indent_guides_tab_guides = 1
-" --------------------------- 调用插件
-call vundle#begin()
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
-"let g:ycm_python_binary_path = '/Library/Frameworks/Python.framework/Versions/3.6/bin/python3'
-"let g:ycm_autoclose_preview_window_after_completion = 1
-" #let g:ycm_server_python_interpreter = '/Library/Frameworks/Python.framework/Versions/3.6/bin/python3'
-"let g:ycm_autoclose_preview_window_after_completion= 1
-"let g:ycm_always_populate_location_list = 1
+let g:ycm_server_python_interpreter = '/usr/bin/python3'
 
-" ---------------------------- Plugin list
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'altercation/vim-colors-solarized'
+if has("autocmd")
+    " Highlight TODO, FIXME, NOTE, etc.
+    if v:version > 701
+        autocmd Syntax * call matchadd('Todo', '\W\zs\(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\)')
+        autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|INFO\|IDEA\|NOTICE\)')
+    endif
+endif
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+function HideNumber()
+      if(&number)
+            set number!
+      else
+            set number
+      endif
+endfunc
+nnoremap <Leader>n :call HideNumber()<CR>
+autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+function! AutoSetFileHead()
+    "如果文件类型为.sh文件
+    if &filetype == 'sh'
+        call setline(1, "\#!/bin/bash")
+    endif
+    "如果文件类型为python
+    if &filetype == 'python'
+        call setline(1, "\#!/usr/bin/env python3")
+        call append(1, "\# encoding: utf-8")
+    endif
+    normal G
+    normal o
+    normal o
+endfunc
+" python
 
-" --------- Git flag
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "Deleted",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
+let g:neoformat_enabled_python = ['autopep8']
 
-" ---------- Nerdtree
-" open a NERDTree automatically when vim starts up
-"autocmd vimenter * NERDTree
-" map a specific key or shortcut to open NERDTree
-let mapleader = ','
-nnoremap <F2> :NERDTreeToggle<CR>
-inoremap <F2> :NERDTreeToggle<CR>
-map <leader>f :NERDTreeFind<CR>
-map <leader>c  :NERDTreeCWD<CR>
-map <leader>s :NERDTreeRefreshRoot<CR>
-  " Switch tab {{{
-
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-noremap <leader>0 :tablast<CR>
-"                                           " }}}
-
-
-" switch tab 
-map <S-k> :tabn <CR>
-map <S-l> :tabp <CR>
-" close other tab
-map <S-p>a :tabo <CR>
-map <S-p>s :tabc <CR>
-" list all tabs
-map <S-p>l :tabs <CR>
-" switch pane 
-map <S-j> <C-W><C-H> <CR>
-map <S-k> <C-W><C-J> <CR>
-map <S-i> <C-W><C-K> <CR>
-map <S-l> <C-W><C-L> <CR>
-" create pane
-map <S-n> :tabnew <CR>
-" adjust pane size
-map + <C-w>+ <CR>
-map - <C-w>- <CR>
-map > <C-w>> <CR>
-map < <C-w>< <CR>
-" adjust pane point
-map <S-p> <C-w>r <CR>
-"
-map <S-p>t <C-W>T <CR>
-nnoremap <silent> vv <C-w>v
-
-" NERDTress File highlighting
-"let NERDTreeMapOpenInTab='<ENTER>'
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-let NERDTreeQuitOnOpen = 1
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
- exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
- exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+function! ToggleAutoFormatCode()
+  if !exists('#AutoFormatCode#BufWritePre')
+    augroup AutoFormatCode
+      autocmd!
+      autocmd BufWritePre * silent! Neoformat
+    augroup END
+  else
+    augroup AutoFormatCode
+      autocmd!
+    augroup END
+  endif
 endfunction
+command! ToggleAutoFormatCode :call ToggleAutoFormatCode()
+call ToggleAutoFormatCode() " Enable by default
 
-call NERDTreeHighlightFile('sh', 'green', 'none', 'green', '#151515')
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
-call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
-call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
-call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
-call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
-call NERDTreeHighlightFile('go', 'Magenta', 'none', '#ff00ff', '#151515')
 
-" go
+nnoremap <C-e> <Esc> $a
+nnoremap <C-a> <Esc>^i
+inoremap <C-e> <Esc> $a
+inoremap <C-a> <Esc>^i
+nnoremap <C-g> :YcmCompleter GoToDefinition<CR>
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'Yggdroot/indentLine'
+Plugin 'fatih/vim-go'
+Plugin 'sbdchd/neoformat'
+Plugin 'Raimondi/delimitMate'
+Plugin 'w0rp/ale'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'mhinz/vim-startify'
+Plugin 'davidhalter/jedi-vim'
+
+call vundle#end()            " required
+
+filetype plugin indent on    " required
+let g:indentLine_color_term = 220
+let g:indentLine_char = 'c'
+set conceallevel=1
+let g:indentLine_conceallevel=1
+"
+" go set
+let g:go_fmt_command = "goimports"
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_fields = 1
@@ -190,65 +127,50 @@ let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"
-
-nmap <Leader>gc :GoErrCheck<CR>
-nmap <Leader>gb :GoBuild<CR>
-nmap <Leader>gd :GoDoc<CR>
-nmap <Leader>gt :GoTest<CR>
-nmap <Leader>gi :GoInstall<CR>
-nmap <Leader>gr :GoRename<CR>
-
-function! OnGolangCompleteDone()
-  if !exists('v:completed_item') || empty(v:completed_item)
-    return
-  endif
-
-  let complete_str = v:completed_item.word
-  if complete_str == ''
-    return
-  endif
-
-  let line = getline('.')
-  let next_char = line[col('.')-1]
-  if  next_char == "("
-    return
-  end
-  let cur_char =line[col('.')-2]
-
-  let abbr = v:completed_item.abbr
-  let startIdx = match(abbr,"(")
-  let endIdx = match(abbr,")")
-  if endIdx - startIdx > 1
-    let argsStr = strpart(abbr, startIdx+1, endIdx - startIdx -1)
-    let argsList = split(argsStr, ",")
-    let snippet = ""
-    if cur_char != "("
-      let snippet = "("
-    end
-    let c = 1
-    for i in argsList
-      if c > 1
-        let snippet = snippet. ", "
-      endif
-      " strip space
-let arg = substitute(i, '^\s*\(.\{-}\)\s*$', '\1', '')
-let snippet = snippet . '${'.c.":".arg.'}'
-let c += 1
-endfor
-let snippet = snippet . ")$0"
-call UltiSnips#Anon(snippet)
-endif
-endfunction
+let g:ycm_gocode_binary_path = "/home/wangyaohua/go/bin/gocode"
+let g:ycm_godef_binary_path = "/home/wangyaohua/go/bin/godef"
+nmap <Leader>e :GoErrCheck<CR>
+nmap <Leader>b :GoBuild<CR>
+nmap <Leader>l :GoLint<CR>
+nmap <Leader>d :GoDoc<CR>
+nmap <Leader>t :GoTest<CR>
+nmap <Leader>i :GoInstall<CR>
+nmap <Leader>r :GoRename<CR>
 
 
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+"""" ALE
+let g:ale_open_list = 0
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_keep_list_window_open = 0
+let g:ale_lint_on_insert_leave = 1
+let g:ale_loclist_msg_format='%linter%: %code: %%s'
+let g:ale_linters = {
+      \ 'go': ['golint', 'go vet', 'go build'],
+      \ 'python': ['flake8'],
+      \ 'c': ['clang'],
+      \ 'cpp': ['clang'],
+      \ }
+let g:ale_python_flake8_use_global = 1
+let g:ale_python_flake8_options = '--ignore=E501,E226'
+let g:ale_echo_cursor = 1
+let g:ale_set_quickfix = 1
+let g:ale_set_loclist = 0
+nmap <leader>a <Plug>(ale_go_to_definition)zz
+nmap <leader>r <Plug>(ale_find_references)
+nmap <Leader>s :ALEToggle<CR>
+nnoremap <leader>ep :ALEPreviousWrap<CR>
+nnoremap <leader>en :ALENextWrap<CR>
+let g:ale_c_clang_options = ''
+
+"""
+let g:jedi#auto_initialization = 1
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#squelch_py_warning = 1
+let g:jedi#goto_assignments_command = "<Leader>g"
+let g:jedi#goto_command = "<C-]>"
+let g:jedi#completions_enabled = 0
+let g:jedi#show_call_signatures = 0
+let g:jedi#usages_command = "<leader>r"
+let g:jedi#rename_command = ""
+let g:jedi#force_py_version = 3
+set noshowmode
