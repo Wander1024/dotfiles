@@ -19,6 +19,7 @@ set cursorline
 set splitright
 set ts=2 sw=2 et
 set expandtab
+set clipboard=unnamedplus
 syntax enable
 hi Search ctermbg=Green
 hi Search ctermfg=LightBlue
@@ -86,6 +87,10 @@ endfunction
 command! ToggleAutoFormatCode :call ToggleAutoFormatCode()
 call ToggleAutoFormatCode() " Enable by default
 
+"vim access clipoard
+inoremap <Leader>v "+pa
+vnoremap <Leader>c "+y
+vnoremap <Leader>p "+d"
 
 nnoremap <C-e> <Esc> $a
 nnoremap <C-a> <Esc>^i
