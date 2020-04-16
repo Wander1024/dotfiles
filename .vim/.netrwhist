@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/data00/home/wangyaohua/go/src/eye/core'
+let g:netrw_dirhist_2='/data00/home/wangyaohua/code/py/cere/venv'
+let g:netrw_dirhist_3='/data00/home/wangyaohua/go/src/github.com/thanos/cmd/thanos'
+let g:netrw_dirhist_4='/data00/home/wangyaohua/deploy/prometheus-ansible'
+let g:netrw_dirhist_5='/data00/home/wangyaohua/deploy/prometheus-ansible/inventory/tlb-prometheus'
